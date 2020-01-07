@@ -10,6 +10,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import {useContext} from '../client/contexts/UserContext'
 
 
 //TODO: Add "/" route and corresponding component as a splash page for users who are not logged in

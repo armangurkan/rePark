@@ -4,11 +4,13 @@ import Geocoder from 'react-map-gl-geocoder'; // coverts user inputted address i
 import marker from './marker.png'; // image of map pin. Will need to find one with transparent background
 import { mongo } from 'mongoose';
 import {UserMenuButton} from '../UserMenuButton/UserMenuButton'
-import {UserProvider} from '../../contexts/UserContext'
+import {UserContext} from '../../contexts/UserContext'
 // hardcoded 2 locations as pins. Will have to replace this with MongoDB Parking data
 const mongoParkingSpots = [];
 
-const MapComponent = () => {
+const MapComponent = (props) => {
+  const user = useContext(UserContext);
+  console.log(user);
   // use React hooks to declare a state variable called viewport. This will be the entire map where the center is at [33.987909, -118.470693] in Los Angeles.
   const [viewport, setViewport] = useState({
     latitude: 33.987909,
@@ -55,13 +57,12 @@ const MapComponent = () => {
     // if (target.className !== 'mapboxgl-ctrl-geocoder--input' && target.className !== 'userMenuButton') { // as long as the user is not clicking in the search box
     if (target.className === 'overlays') {
       console.log(`clicked, longitude: ${longitude}, latitude: ${latitude}`);
-      setMarkers(markers => [...markers, {latitude, longitude}]); // add a marker at the location
+      setMarkers(markers => [...markers, {latitude, longitude, }]); // add a marker at the location
       console.log('markers: ', markers);
     }
   };
 
   return (
-      <UserProvider>
     <div>
 
       <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' rel='stylesheet' />
@@ -131,6 +132,7 @@ const MapComponent = () => {
             <Popup
               latitude={selectedPark.latitude}
               longitude={selectedPark.longitude}
+              // onOpen={async() => window.fetch('/api/')}
               onClose={() => { // when the x on the top right of the pop up is clicked
                 console.log();
                 setSelectedPark(null); // set the state of selectedPark back to null
@@ -147,7 +149,6 @@ const MapComponent = () => {
         </ReactMapGL>
       </div>
     </div>
-      </UserProvider>
   );
 };
 
