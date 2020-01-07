@@ -44,7 +44,7 @@ const MapComponent = () => {
       ...viewport,
       ...geocoderDefaultOverrides
     });
-  }
+  };
 
   // markers array is the state variable that will be populated with each individual marker object
   const [markers, setMarkers] = React.useState([]);
