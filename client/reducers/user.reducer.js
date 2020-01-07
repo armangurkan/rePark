@@ -5,7 +5,7 @@ const userReducer = (state, action) => {
             return [...state, { id: uuid(), task: action.task, completed: false }];
         case "LOGOUT":
             return state.filter(todo => todo.id !== action.id);
-        case "COMMIT":
+        case "SETCAR":
             return state.map(todo =>
                 todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
             );

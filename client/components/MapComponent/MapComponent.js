@@ -5,15 +5,13 @@ import marker from './marker.png'; // image of map pin. Will need to find one wi
 import { mongo } from 'mongoose';
 import {UserMenuButton} from '../UserMenuButton/UserMenuButton'
 import {UserContext} from '../../contexts/UserContext'
-import { UserContext } from '../../../client/contexts/UserContext.js';
 
 // hardcoded 2 locations as pins. Will have to replace this with MongoDB Parking data
 const mongoParkingSpots = [{latitude: 33.985673, longitude: -118.455888, user_ID: 10000, user_name: 'Catherine', wait_time: '10'},
                           {latitude: 33.982185, longitude: -118.438087, user_ID: 10001, user_name: 'Amruth', wait_time: '15'}];
 
-const MapComponent = (props) => {
-  const user = useContext(UserContext);
-  console.log(user);
+export const MapComponent = (props) => {
+
   // use React hooks to declare a state variable called viewport. This will be the entire map where the center is at [33.987909, -118.470693] in Los Angeles.
   const [viewport, setViewport] = useState({
     latitude: 33.987909,
@@ -207,7 +205,5 @@ const MapComponent = (props) => {
       </div>
     </div>
   );
-};
-
-export default MapComponent;
+}};
 
