@@ -3,7 +3,7 @@ import ReactMapGL, {Marker, Popup, GeolocateControl} from 'react-map-gl'; // usi
 import Geocoder from 'react-map-gl-geocoder'; // coverts user inputted address into coordinates
 import marker from './marker.png'; // image of map pin. Will need to find one with transparent background
 import { mongo } from 'mongoose';
-
+import {UserMenuButton} from '../UserMenuButton/UserMenuButton'
 // hardcoded 2 locations as pins. Will have to replace this with MongoDB Parking data
 const mongoParkingSpots = [{latitude: 33.985673, longitude: -118.455888, user_ID: 10000, user_name: 'Catherine', wait_time: '10'},
                           {latitude: 33.982185, longitude: -118.438087, user_ID: 10001, user_name: 'Amruth', wait_time: '15'}];
@@ -13,8 +13,8 @@ const MapComponent = () => {
   const [viewport, setViewport] = useState({
     latitude: 33.987909,
     longitude: -118.470693,
-    width: '90vw',
-    height: '90vh',
+    width: '100vw',
+    height: '100vh',
     zoom: 10
   });
 
@@ -52,7 +52,7 @@ const MapComponent = () => {
   // when the user clicks on the map, add the coordinates into the markers array
   const handleClick = ({ lngLat: [longitude, latitude], target }) => { // the parameter is the PointerEvent in react-map-gl
     console.log('target.className', target.className);
-    if (target.className !== 'mapboxgl-ctrl-geocoder--input') { // as long as the user is not clicking in the search box
+    if (target.className !== 'mapboxgl-ctrl-geocoder--input' && target.className !== 'userMenuButton') { // as long as the user is not clicking in the search box
       console.log(`clicked, longitude: ${longitude}, latitude: ${latitude}`);
       setMarkers(markers => [...markers, {latitude, longitude}]); // add a marker at the location
       console.log('markers: ', markers);
@@ -61,6 +61,7 @@ const MapComponent = () => {
 
   return (
     <div>
+
       <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' rel='stylesheet' />
       <div id="mapbox" style={{margin: '5vw', textAlign: 'center'}}>
         <ReactMapGL // ReactMapGL is the entire map element
@@ -80,10 +81,15 @@ const MapComponent = () => {
             reverseGeocode={true}
             position={"bottom-left"}
           />
+
           <GeolocateControl // this asks the user if they allow sharing their location, if they do, the map automatically drops a blue dot at their current location
             positionOptions={{enableHighAccuracy: true}}
             trackUserLocation={true}
             showUserLocation={true}
+          />
+          <UserMenuButton
+              className = 'userMenuButton'
+            onClick = {handleClick}
           />
           {markers.map((park, i) => ( // map the array of parking spots
             <Marker // this JSX element is imported from MapBox that will mark different locations on the map
@@ -116,9 +122,9 @@ const MapComponent = () => {
               </button>
             </Marker>
           ))}
-          
+
           {selectedPark ? ( // ternary operator: if there is a selectedPark, show a popup window
-            <Popup 
+            <Popup
               latitude={selectedPark.latitude}
               longitude={selectedPark.longitude}
               onClose={() => { // when the x on the top right of the pop up is clicked
@@ -132,7 +138,7 @@ const MapComponent = () => {
               </div>
             </Popup>
           ) : null}
-          
+
         </ReactMapGL>
       </div>
     </div>

@@ -3,13 +3,14 @@ import LogInComponent from './components/LogInComponent/LogInComponent';
 import SignUpInitial from './containers/SignUp/SignUpInitial';
 import SignUpSecondary from './containers/SignUp/SignUpSecondary';
 import MapComponent from './components/MapComponent/MapComponent';
+import OnboardingComponent from "./components/OnboardingComponent/OnboardingComponent";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
-import OnboardingComponent from "./components/OnboardingComponent/OnboardingComponent";
+
 
 //TODO: Add "/" route and corresponding component as a splash page for users who are not logged in
 //TODO: Add a route for the actual app once a user has logged in
