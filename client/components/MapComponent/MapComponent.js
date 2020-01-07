@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'; // using React hooks
+import React, {useState, useEffect, useContext} from 'react'; // using React hooks
 import ReactMapGL, {Marker, Popup, GeolocateControl} from 'react-map-gl'; // using mapbox api
 import Geocoder from 'react-map-gl-geocoder'; // coverts user inputted address into coordinates
 import marker from './marker.png'; // image of map pin. Will need to find one with transparent background
 import { mongo } from 'mongoose';
 import {UserMenuButton} from '../UserMenuButton/UserMenuButton'
+import {UserProvider} from '../../contexts/UserContext'
 // hardcoded 2 locations as pins. Will have to replace this with MongoDB Parking data
-const mongoParkingSpots = [{latitude: 33.985673, longitude: -118.455888, user_ID: 10000, user_name: 'Catherine', wait_time: '10'},
-                          {latitude: 33.982185, longitude: -118.438087, user_ID: 10001, user_name: 'Amruth', wait_time: '15'}];
+const mongoParkingSpots = [];
 
 const MapComponent = () => {
   // use React hooks to declare a state variable called viewport. This will be the entire map where the center is at [33.987909, -118.470693] in Los Angeles.
@@ -52,7 +52,8 @@ const MapComponent = () => {
   // when the user clicks on the map, add the coordinates into the markers array
   const handleClick = ({ lngLat: [longitude, latitude], target }) => { // the parameter is the PointerEvent in react-map-gl
     console.log('target.className', target.className);
-    if (target.className !== 'mapboxgl-ctrl-geocoder--input' && target.className !== 'userMenuButton') { // as long as the user is not clicking in the search box
+    // if (target.className !== 'mapboxgl-ctrl-geocoder--input' && target.className !== 'userMenuButton') { // as long as the user is not clicking in the search box
+    if (target.className === 'overlays') {
       console.log(`clicked, longitude: ${longitude}, latitude: ${latitude}`);
       setMarkers(markers => [...markers, {latitude, longitude}]); // add a marker at the location
       console.log('markers: ', markers);
@@ -60,6 +61,7 @@ const MapComponent = () => {
   };
 
   return (
+      <UserProvider>
     <div>
 
       <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' rel='stylesheet' />
@@ -96,6 +98,7 @@ const MapComponent = () => {
               key={i}
               latitude={park.latitude}
               longitude={park.longitude}
+              draggable={false}
             >
               <button className="marker-btn" onClick={(e) => {
                 e.preventDefault();
@@ -115,6 +118,7 @@ const MapComponent = () => {
             >
               <button className="marker-btn" onClick={(e) => {
                 e.preventDefault();
+                console.log('hellloo', e);
                 console.log('clicked: ', park);
                 setSelectedPark(park); // when the map pin button is clicked, we will set the state of selectedPark to be the current park the user clicked
               }}>
@@ -128,6 +132,7 @@ const MapComponent = () => {
               latitude={selectedPark.latitude}
               longitude={selectedPark.longitude}
               onClose={() => { // when the x on the top right of the pop up is clicked
+                console.log();
                 setSelectedPark(null); // set the state of selectedPark back to null
               }}
             >
@@ -142,6 +147,7 @@ const MapComponent = () => {
         </ReactMapGL>
       </div>
     </div>
+      </UserProvider>
   );
 };
 

@@ -31,11 +31,11 @@ export function UserProvider(props) {
     setUserInfo({
       ...user,
       ...newUser
-    })}
+    })};
 
   return (
     <UserContext.Provider value={{
-      user, updateUser, dispatchUserState
+      user, userState, updateUser, dispatchUserState
     }}
     >
       {props.children}
