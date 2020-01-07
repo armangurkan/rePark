@@ -1,43 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AutoRotatingCarousel, Slide } from 'material-auto-rotating-carousel'
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { green400, green600, blue400, blue600, red400, red600 } from '@material-ui/core/colors'
-import { useTheme } from '@material-ui/core/styles'
+import { green400, green600 } from '@material-ui/core/colors/green';
+import { blue400, blue600 } from '@material-ui/core/colors/blue';
+import { red400, red600 } from '@material-ui/core/colors/red';
+import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {Link} from 'react-router-dom'
-import {useState} from 'react'
+import slide1 from './slide1.png'
+import slide2 from './slide2.png'
+import slide3 from './slide3.png'
 
-const OnboardingComponent = ({ handleOpen, setHandleOpen, isMobile }) => {
-    const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.down('sm'));
-    return (
-        <AutoRotatingCarousel
-            label="Get started"
-            mobile = {matches}
-        >
-            <Slide
-                media={<img src="http://www.icons101.com/icon_png/size_256/id_79394/youtube.png" />}
-                mediaBackgroundStyle={theme.palette.secondary}
-                contentStyle={{ backgroundColor: red600 }}
-                title="This is a very cool feature"
-                subtitle="Just using this will blow your mind."
-            />
-            <Slide
-                media={<img src="http://www.icons101.com/icon_png/size_256/id_80975/GoogleInbox.png" />}
-                mediaBackgroundStyle={{ backgroundColor: blue400 }}
-                contentStyle={{ backgroundColor: blue600 }}
-                title="Ever wanted to be popular?"
-                subtitle="Well just mix two colors and your are good to go!"
-            />
-            <Slide
-                media={<img src="http://www.icons101.com/icon_png/size_256/id_76704/Google_Settings.png" />}
-                mediaBackgroundStyle={{ backgroundColor: green400 }}
-                contentStyle={{ backgroundColor: green600 }}
-                title="May the force be with you"
-                subtitle="The Force is a metaphysical and ubiquitous power in the Star Wars universe."
-            />
-        </AutoRotatingCarousel>
-    )
+const OnboardingComponent = (props) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+  const [handleOpen, setHandleOpen] = useState(true);
+  return (
+    <div>
+      <CssBaseline />
+      <AutoRotatingCarousel
+        label="Get started"
+        open={handleOpen}
+        onClose={() => setHandleOpen(false)}
+        onStart={() => setHandleOpen(false)}
+        mobile={matches}
+      >
+        <Slide
+          media={<img src={slide1} />}
+          mediaBackgroundStyle={theme.palette.secondary}
+          contentstyle={{ backgroundColor: red600 }}
+          title="'rePark' helps you find parking nearby"
+          subtitle="Fast and easy."
+        />
+        <Slide
+          media={<img src={slide2} />}
+          mediaBackgroundStyle={{ backgroundColor: blue400 }}
+          contentstyle={{ backgroundColor: blue600 }}
+          title="Your time is valuable"
+          subtitle="'rePark' is the solution for you to save time looking for parking!"
+        />
+        <Slide
+          media={<img src={slide3} />}
+          mediaBackgroundStyle={{ backgroundColor: green400 }}
+          contentstyle={{ backgroundColor: green600 }}
+          title="Sign up Now!"
+          subtitle="And you will see a map of all available parking spots near you."
+        />
+      </AutoRotatingCarousel>
+    </div >
+  )
 };
 
 export default OnboardingComponent;
